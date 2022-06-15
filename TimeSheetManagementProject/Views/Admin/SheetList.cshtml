@@ -1,0 +1,54 @@
+﻿@model IEnumerable<TimeSheetManagementProject.Models.TimeSheetDetail>
+
+@{
+    ViewBag.Title = "SheetList";
+}
+
+<h2>SheetList</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DaysOfWeek)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.hours)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Project.ProjectName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tblLogin.UserName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.DaysOfWeek)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.hours)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Project.ProjectName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tblLogin.UserName)
+        </td>
+        <td>
+            <input type="checkbox" value="Approve" class="btn btn-default"/>
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.TimeSheetId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.TimeSheetId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.TimeSheetId })
+        </td>
+    </tr>
+}
+
+</table>

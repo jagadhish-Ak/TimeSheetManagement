@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TimeSheetManagementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Project">
+    <Key>
+      <PropertyRef Name="ProjectId" />
+    </Key>
+    <Property Name="ProjectId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProjectName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="CompanyName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="Id" Type="Int32" />
+    <NavigationProperty Name="tblLogin" Relationship="Self.FK__Projects__Id__30F848ED" FromRole="Projects" ToRole="tblLogin" />
+    <NavigationProperty Name="TimeSheetDetails" Relationship="Self.FK__TimeSheet__Proje__33D4B598" FromRole="Projects" ToRole="TimeSheetDetails" />
+  </EntityType>
+  <EntityType Name="tblLogin">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Role" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Projects" Relationship="Self.FK__Projects__Id__30F848ED" FromRole="tblLogin" ToRole="Projects" />
+    <NavigationProperty Name="TimeSheetDetails" Relationship="Self.FK__TimeSheetDet__Id__34C8D9D1" FromRole="tblLogin" ToRole="TimeSheetDetails" />
+  </EntityType>
+  <EntityType Name="TimeSheetDetail">
+    <Key>
+      <PropertyRef Name="TimeSheetId" />
+    </Key>
+    <Property Name="TimeSheetId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DaysOfWeek" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="hours" Type="Int32" />
+    <Property Name="ProjectId" Type="Int32" />
+    <Property Name="Id" Type="Int32" />
+    <NavigationProperty Name="Project" Relationship="Self.FK__TimeSheet__Proje__33D4B598" FromRole="TimeSheetDetails" ToRole="Projects" />
+    <NavigationProperty Name="tblLogin" Relationship="Self.FK__TimeSheetDet__Id__34C8D9D1" FromRole="TimeSheetDetails" ToRole="tblLogin" />
+  </EntityType>
+  <Association Name="FK__Projects__Id__30F848ED">
+    <End Role="tblLogin" Type="Self.tblLogin" Multiplicity="0..1" />
+    <End Role="Projects" Type="Self.Project" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblLogin">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Projects">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TimeSheet__Proje__33D4B598">
+    <End Role="Projects" Type="Self.Project" Multiplicity="0..1" />
+    <End Role="TimeSheetDetails" Type="Self.TimeSheetDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="ProjectId" />
+      </Principal>
+      <Dependent Role="TimeSheetDetails">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TimeSheetDet__Id__34C8D9D1">
+    <End Role="tblLogin" Type="Self.tblLogin" Multiplicity="0..1" />
+    <End Role="TimeSheetDetails" Type="Self.TimeSheetDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblLogin">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TimeSheetDetails">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Projects" EntityType="Self.Project" />
+    <EntitySet Name="tblLogins" EntityType="Self.tblLogin" />
+    <EntitySet Name="TimeSheetDetails" EntityType="Self.TimeSheetDetail" />
+    <AssociationSet Name="FK__Projects__Id__30F848ED" Association="Self.FK__Projects__Id__30F848ED">
+      <End Role="tblLogin" EntitySet="tblLogins" />
+      <End Role="Projects" EntitySet="Projects" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TimeSheet__Proje__33D4B598" Association="Self.FK__TimeSheet__Proje__33D4B598">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="TimeSheetDetails" EntitySet="TimeSheetDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TimeSheetDet__Id__34C8D9D1" Association="Self.FK__TimeSheetDet__Id__34C8D9D1">
+      <End Role="tblLogin" EntitySet="tblLogins" />
+      <End Role="TimeSheetDetails" EntitySet="TimeSheetDetails" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
